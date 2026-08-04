@@ -1,0 +1,95 @@
+/* ============================================================ */
+/*  Reusable utilities — glass, gradients, masks                 */
+/* ============================================================ */
+
+/* ---------- Glass surfaces ---------- */
+@utility glass {
+  background: rgb(var(--glass-bg));
+  backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  border: 1px solid rgb(var(--glass-border));
+}
+
+@utility glass-strong {
+  background: rgb(var(--glass-strong));
+  backdrop-filter: blur(calc(var(--glass-blur) + 8px)) saturate(180%);
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) + 8px)) saturate(180%);
+  border: 1px solid rgb(var(--glass-border));
+}
+
+@utility glass-subtle {
+  background: rgb(var(--glass-bg) / 0.45);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  border: 1px solid rgb(var(--glass-border) / 0.7);
+}
+
+/* ---------- Text ---------- */
+@utility text-gradient {
+  background: linear-gradient(
+    120deg,
+    rgb(var(--primary)) 0%,
+    rgb(var(--secondary)) 55%,
+    rgb(var(--primary-soft)) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility text-gradient-brand {
+  background: linear-gradient(120deg, rgb(var(--primary-soft)) 0%, rgb(var(--primary-strong)) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- Decorative backgrounds ---------- */
+@utility bg-grid {
+  background-image: linear-gradient(to right, rgb(var(--border) / 0.6) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(var(--border) / 0.6) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+@utility bg-dot {
+  background-image: radial-gradient(circle, rgb(var(--foreground) / 0.12) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+@utility base-grid {
+  background-image: linear-gradient(to right, rgb(var(--foreground) / 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(var(--foreground) / 0.04) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 60%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 60%, transparent 100%);
+}
+
+/* ---------- Mask helpers ---------- */
+@utility fade-x {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+@utility fade-b {
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent);
+  mask-image: linear-gradient(to bottom, #000 55%, transparent);
+}
+
+/* ---------- Scrollbars ---------- */
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ---------- Motion helpers ---------- */
+@utility animate-indeterminate {
+  animation: indeterminate-slide 1.4s ease-in-out infinite;
+}
+
+@utility animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-move 8s ease infinite;
+}

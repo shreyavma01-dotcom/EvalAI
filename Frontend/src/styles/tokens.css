@@ -1,0 +1,477 @@
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ============================================================ */
+/*  EvalAI — Design Tokens                                       */
+/*  Single source of truth for color, type, space, shadow, etc.  */
+/*  RGB triplets are stored so opacity modifiers (bg-x/20) work. */
+/* ============================================================ */
+
+:root {
+  color-scheme: light;
+
+  /* ---------- Brand (Mint palette) ---------- */
+  --primary: 47 143 107;
+  --primary-soft: 88 196 155;
+  --primary-strong: 36 122 91;
+  --primary-muted: 228 246 238;
+  --primary-foreground: 255 255 255;
+
+  --secondary: 88 196 155;
+  --secondary-soft: 130 219 185;
+  --secondary-strong: 36 122 91;
+  --secondary-muted: 226 246 239;
+  --secondary-foreground: 255 255 255;
+
+  --success: 53 179 110;
+  --success-soft: 104 205 151;
+  --success-strong: 35 141 88;
+  --success-muted: 233 248 240;
+  --success-foreground: 255 255 255;
+
+  --warning: 244 166 42;
+  --warning-soft: 248 191 90;
+  --warning-strong: 196 126 16;
+  --warning-muted: 255 247 230;
+  --warning-foreground: 255 255 255;
+
+  --danger: 225 82 82;
+  --danger-soft: 235 124 124;
+  --danger-strong: 190 52 52;
+  --danger-muted: 252 237 237;
+  --danger-foreground: 255 255 255;
+
+  --info: 58 158 201;
+  --info-soft: 101 186 221;
+  --info-strong: 36 118 153;
+  --info-muted: 236 247 252;
+  --info-foreground: 255 255 255;
+
+  /* ---------- Gray scale (mint-tinted) ---------- */
+  --gray-50: 248 252 249;
+  --gray-100: 240 248 244;
+  --gray-200: 224 238 231;
+  --gray-300: 197 219 209;
+  --gray-400: 148 180 167;
+  --gray-500: 110 146 133;
+  --gray-600: 82 114 103;
+  --gray-700: 58 84 75;
+  --gray-800: 38 57 51;
+  --gray-900: 23 38 34;
+  --gray-950: 12 22 19;
+
+  /* ---------- Surfaces ---------- */
+  --background: 248 252 249;
+  --background-soft: 243 250 247;
+  --foreground: 23 51 42;
+  --foreground-soft: 71 98 88;
+  --muted: 91 116 107;
+  --muted-foreground: 91 116 107;
+  --subtle: 148 172 163;
+  --faint: 216 236 226;
+
+  --surface: 255 255 255;
+  --surface-raised: 255 255 255;
+  --surface-subtle: 245 250 247;
+  --surface-sunken: 239 248 243;
+
+  --card: 255 255 255;
+  --card-foreground: 23 51 42;
+  --card-subtle: 91 116 107;
+
+  /* ---------- Glass ---------- */
+  --glass-bg: 255 255 255 0.72;
+  --glass-border: 255 255 255 0.55;
+  --glass-strong: 255 255 255 0.88;
+  --glass-blur: 18px;
+
+  /* ---------- Borders ---------- */
+  --border: 216 236 226;
+  --border-strong: 191 221 208;
+  --border-subtle: 240 249 246;
+
+  /* ---------- Misc ---------- */
+  --accent: 235 248 241;
+  --accent-foreground: 23 51 42;
+  --ring: 47 143 107;
+  --overlay: 8 20 15;
+  --selection: 47 143 107;
+}
+
+/* ============================================================ */
+/*  THEME MAPPING  (inline = utilities reference runtime vars)   */
+/* ============================================================ */
+@theme inline {
+  --color-primary: rgb(var(--primary));
+  --color-primary-soft: rgb(var(--primary-soft));
+  --color-primary-strong: rgb(var(--primary-strong));
+  --color-primary-muted: rgb(var(--primary-muted));
+  --color-primary-foreground: rgb(var(--primary-foreground));
+
+  --color-secondary: rgb(var(--secondary));
+  --color-secondary-soft: rgb(var(--secondary-soft));
+  --color-secondary-strong: rgb(var(--secondary-strong));
+  --color-secondary-muted: rgb(var(--secondary-muted));
+  --color-secondary-foreground: rgb(var(--secondary-foreground));
+
+  --color-success: rgb(var(--success));
+  --color-success-soft: rgb(var(--success-soft));
+  --color-success-strong: rgb(var(--success-strong));
+  --color-success-muted: rgb(var(--success-muted));
+  --color-success-foreground: rgb(var(--success-foreground));
+
+  --color-warning: rgb(var(--warning));
+  --color-warning-soft: rgb(var(--warning-soft));
+  --color-warning-strong: rgb(var(--warning-strong));
+  --color-warning-muted: rgb(var(--warning-muted));
+  --color-warning-foreground: rgb(var(--warning-foreground));
+
+  --color-danger: rgb(var(--danger));
+  --color-danger-soft: rgb(var(--danger-soft));
+  --color-danger-strong: rgb(var(--danger-strong));
+  --color-danger-muted: rgb(var(--danger-muted));
+  --color-danger-foreground: rgb(var(--danger-foreground));
+
+  --color-info: rgb(var(--info));
+  --color-info-soft: rgb(var(--info-soft));
+  --color-info-strong: rgb(var(--info-strong));
+  --color-info-muted: rgb(var(--info-muted));
+  --color-info-foreground: rgb(var(--info-foreground));
+
+  --color-gray-50: rgb(var(--gray-50));
+  --color-gray-100: rgb(var(--gray-100));
+  --color-gray-200: rgb(var(--gray-200));
+  --color-gray-300: rgb(var(--gray-300));
+  --color-gray-400: rgb(var(--gray-400));
+  --color-gray-500: rgb(var(--gray-500));
+  --color-gray-600: rgb(var(--gray-600));
+  --color-gray-700: rgb(var(--gray-700));
+  --color-gray-800: rgb(var(--gray-800));
+  --color-gray-900: rgb(var(--gray-900));
+  --color-gray-950: rgb(var(--gray-950));
+
+  --color-background: rgb(var(--background));
+  --color-background-soft: rgb(var(--background-soft));
+  --color-foreground: rgb(var(--foreground));
+  --color-foreground-soft: rgb(var(--foreground-soft));
+  --color-muted: rgb(var(--muted));
+  --color-muted-foreground: rgb(var(--muted-foreground));
+  --color-subtle: rgb(var(--subtle));
+  --color-faint: rgb(var(--faint));
+
+  --color-surface: rgb(var(--surface));
+  --color-surface-raised: rgb(var(--surface-raised));
+  --color-surface-subtle: rgb(var(--surface-subtle));
+  --color-surface-sunken: rgb(var(--surface-sunken));
+
+  --color-card: rgb(var(--card));
+  --color-card-foreground: rgb(var(--card-foreground));
+  --color-card-subtle: rgb(var(--card-subtle));
+
+  --color-sidebar: rgb(var(--sidebar));
+  --color-sidebar-foreground: rgb(var(--sidebar-foreground));
+  --color-sidebar-muted: rgb(var(--sidebar-muted));
+  --color-sidebar-border: rgb(var(--sidebar-border));
+  --color-sidebar-active: rgb(var(--sidebar-active));
+
+  --color-glass-bg: rgb(var(--glass-bg));
+  --color-glass-border: rgb(var(--glass-border));
+  --color-glass-strong: rgb(var(--glass-strong));
+
+  --color-border: rgb(var(--border));
+  --color-border-strong: rgb(var(--border-strong));
+  --color-border-subtle: rgb(var(--border-subtle));
+
+  --color-accent: rgb(var(--accent));
+  --color-accent-foreground: rgb(var(--accent-foreground));
+  --color-ring: rgb(var(--ring));
+  --color-overlay: rgb(var(--overlay));
+  --color-selection: rgb(var(--selection));
+
+  /* Semantic shadows — dark aware via runtime vars below */
+  --shadow-soft: var(--shadow-soft-runtime);
+  --shadow-medium: var(--shadow-medium-runtime);
+  --shadow-large: var(--shadow-large-runtime);
+  --shadow-floating: var(--shadow-floating-runtime);
+  --shadow-glass: var(--shadow-glass-runtime);
+  --shadow-hover: var(--shadow-hover-runtime);
+  --shadow-interactive: var(--shadow-interactive-runtime);
+  --shadow-pop: var(--shadow-pop-runtime);
+  --shadow-card: var(--shadow-card-runtime);
+  --shadow-glow: var(--shadow-glow-runtime);
+  --shadow-glow-primary: var(--shadow-glow-primary-runtime);
+  --shadow-glow-secondary: var(--shadow-glow-secondary-runtime);
+}
+
+/* Runtime shadow values (overrideable per theme) */
+:root {
+  --shadow-soft-runtime: 0 1px 2px 0 rgb(16 185 129 / 0.06), 0 1px 3px -1px rgb(16 185 129 / 0.05);
+  --shadow-medium-runtime: 0 2px 4px -1px rgb(16 185 129 / 0.07), 0 4px 14px -2px rgb(16 185 129 / 0.07);
+  --shadow-large-runtime: 0 8px 24px -8px rgb(16 185 129 / 0.1), 0 12px 32px -8px rgb(16 185 129 / 0.1);
+  --shadow-floating-runtime: 0 16px 48px -12px rgb(16 185 129 / 0.18), 0 8px 20px -8px rgb(16 185 129 / 0.1);
+  --shadow-glass-runtime: 0 8px 32px -12px rgb(16 185 129 / 0.14), inset 0 1px 0 0 rgb(255 255 255 / 0.5);
+  --shadow-hover-runtime: 0 8px 24px -8px rgb(16 185 129 / 0.14), 0 20px 50px -12px rgb(16 185 129 / 0.12);
+  --shadow-interactive-runtime: 0 1px 2px 0 rgb(16 185 129 / 0.08), inset 0 1px 0 0 rgb(255 255 255 / 0.8);
+  --shadow-pop-runtime: 0 4px 20px -4px rgb(16 185 129 / 0.12), 0 16px 44px -12px rgb(16 185 129 / 0.18);
+  --shadow-card-runtime: 0 1px 2px 0 rgb(16 185 129 / 0.05), 0 8px 30px -8px rgb(16 185 129 / 0.08);
+  --shadow-glow-runtime: 0 0 32px -4px rgb(47 143 107 / 0.35);
+  --shadow-glow-primary-runtime: 0 8px 32px -8px rgb(47 143 107 / 0.45);
+  --shadow-glow-secondary-runtime: 0 8px 32px -8px rgb(88 196 155 / 0.4);
+}
+
+/* ============================================================ */
+/*  STATIC THEME (same across modes)                             */
+/* ============================================================ */
+@theme {
+  /* ---------- Fonts ---------- */
+  --font-sans: 'Outfit', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Outfit', ui-sans-serif, system-ui, sans-serif;
+  --font-outfit: 'Outfit', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'SF Mono', 'Cascadia Code', 'JetBrains Mono', ui-monospace, monospace;
+
+  /* ---------- Font sizes ---------- */
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1rem;
+  --text-2xs--letter-spacing: 0.01em;
+
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.125rem;
+  --text-xs--letter-spacing: 0.01em;
+
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.375rem;
+  --text-sm--letter-spacing: -0.006em;
+
+  --text-base: 1rem;
+  --text-base--line-height: 1.5rem;
+  --text-base--letter-spacing: -0.011em;
+
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.75rem;
+  --text-lg--letter-spacing: -0.011em;
+
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.75rem;
+  --text-xl--letter-spacing: -0.014em;
+
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 2rem;
+  --text-2xl--letter-spacing: -0.016em;
+
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: 2.375rem;
+  --text-3xl--letter-spacing: -0.021em;
+
+  --text-4xl: 2.25rem;
+  --text-4xl--line-height: 2.75rem;
+  --text-4xl--letter-spacing: -0.022em;
+
+  --text-5xl: 3rem;
+  --text-5xl--line-height: 3.5rem;
+  --text-5xl--letter-spacing: -0.026em;
+
+  --text-6xl: 3.75rem;
+  --text-6xl--line-height: 4.25rem;
+  --text-6xl--letter-spacing: -0.031em;
+
+  --text-7xl: 4.5rem;
+  --text-7xl--line-height: 5rem;
+  --text-7xl--letter-spacing: -0.037em;
+
+  --text-8xl: 6rem;
+  --text-8xl--line-height: 1;
+  --text-8xl--letter-spacing: -0.041em;
+
+  --text-9xl: 8rem;
+  --text-9xl--line-height: 1;
+  --text-9xl--letter-spacing: -0.045em;
+
+  /* ---------- Font weights ---------- */
+  --font-weight-thin: 100;
+  --font-weight-extralight: 200;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+
+  /* ---------- Letter spacing ---------- */
+  --tracking-tighter: -0.05em;
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+
+  /* ---------- Spacing scale (extras on top of default) ---------- */
+  --spacing-0-5: 0.125rem;
+  --spacing-1: 0.25rem;
+  --spacing-1-5: 0.375rem;
+  --spacing-2: 0.5rem;
+  --spacing-2-5: 0.625rem;
+  --spacing-3: 0.75rem;
+  --spacing-3-5: 0.875rem;
+  --spacing-4: 1rem;
+  --spacing-4-5: 1.125rem;
+  --spacing-5: 1.25rem;
+  --spacing-5-5: 1.375rem;
+  --spacing-6: 1.5rem;
+  --spacing-6-5: 1.625rem;
+  --spacing-7: 1.75rem;
+  --spacing-7-5: 1.875rem;
+  --spacing-8: 2rem;
+  --spacing-9: 2.25rem;
+  --spacing-10: 2.5rem;
+  --spacing-11: 2.75rem;
+  --spacing-12: 3rem;
+  --spacing-13: 3.25rem;
+  --spacing-14: 3.5rem;
+  --spacing-15: 3.75rem;
+  --spacing-16: 4rem;
+  --spacing-17: 4.25rem;
+  --spacing-18: 4.5rem;
+  --spacing-19: 4.75rem;
+  --spacing-20: 5rem;
+  --spacing-21: 5.25rem;
+  --spacing-22: 5.5rem;
+  --spacing-23: 5.75rem;
+  --spacing-24: 6rem;
+  --spacing-25: 6.25rem;
+  --spacing-26: 6.5rem;
+  --spacing-27: 6.75rem;
+  --spacing-28: 7rem;
+  --spacing-30: 7.5rem;
+  --spacing-32: 8rem;
+  --spacing-36: 9rem;
+  --spacing-40: 10rem;
+  --spacing-44: 11rem;
+  --spacing-48: 12rem;
+  --spacing-52: 13rem;
+  --spacing-56: 14rem;
+  --spacing-60: 15rem;
+  --spacing-64: 16rem;
+  --spacing-68: 17rem;
+  --spacing-72: 18rem;
+  --spacing-80: 20rem;
+  --spacing-96: 24rem;
+
+  /* Semantic spacing — vertical rhythm & layouts */
+  --spacing-page: clamp(1.25rem, 3vw, 2.5rem);
+  --spacing-section: clamp(2.5rem, 6vw, 5rem);
+  --spacing-section-sm: clamp(2rem, 4vw, 3.5rem);
+  --spacing-card: 1.5rem;
+  --spacing-grid: 1.5rem;
+  --spacing-dashboard: clamp(1rem, 2vw, 1.5rem);
+  --spacing-form: 1rem;
+  --spacing-dialog: 1.25rem;
+
+  /* ---------- Border radius ---------- */
+  --radius-2xs: 0.25rem;
+  --radius-xs: 0.375rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+  --radius-3xl: 1.75rem;
+  --radius-4xl: 2.25rem;
+  --radius-5xl: 3rem;
+
+  /* ---------- Z-index scale ---------- */
+  --z-behind: -1;
+  --z-base: 0;
+  --z-docked: 10;
+  --z-sticky: 100;
+  --z-dropdown: 1000;
+  --z-overlay: 1100;
+  --z-drawer: 1200;
+  --z-modal: 1300;
+  --z-popover: 1400;
+  --z-tooltip: 1500;
+  --z-toast: 1600;
+  --z-command: 1700;
+
+  /* ---------- Motion duration ---------- */
+  --duration-instant: 0ms;
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --duration-slower: 600ms;
+  --duration-slowest: 900ms;
+
+  /* ---------- Easing ---------- */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-expo-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ---------- Blur levels ---------- */
+  --blur-2xs: 2px;
+  --blur-xs: 4px;
+  --blur-sm: 8px;
+  --blur-md: 12px;
+  --blur-lg: 16px;
+  --blur-xl: 24px;
+  --blur-2xl: 40px;
+  --blur-3xl: 64px;
+
+  /* ---------- Opacity tokens ---------- */
+  --opacity-2xs: 0.03;
+  --opacity-xs: 0.06;
+  --opacity-sm: 0.1;
+  --opacity-md: 0.24;
+  --opacity-lg: 0.48;
+  --opacity-xl: 0.72;
+
+  /* ---------- Container widths ---------- */
+  --container-2xs: 20rem;
+  --container-xs: 24rem;
+  --container-sm: 28rem;
+  --container-md: 36rem;
+  --container-lg: 44rem;
+  --container-xl: 56rem;
+  --container-2xl: 64rem;
+  --container-3xl: 72rem;
+  --container-4xl: 80rem;
+  --container-5xl: 88rem;
+  --container-6xl: 96rem;
+  --container-7xl: 108rem;
+  --container-app: 88rem;
+  --container-narrow: 42rem;
+  --container-wide: 84rem;
+
+  /* ---------- Breakpoints ---------- */
+  --breakpoint-xs: 30rem;
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+  --breakpoint-3xl: 112rem;
+
+  /* ---------- Animations ---------- */
+  --animate-fade-in: fade-in 0.5s ease-out both;
+  --animate-fade-in-up: fade-in-up 0.6s ease-expo-out both;
+  --animate-fade-in-down: fade-in-down 0.6s ease-expo-out both;
+  --animate-scale-in: scale-in 0.5s ease-expo-out both;
+  --animate-scale-out: scale-out 0.3s ease-in both;
+  --animate-slide-up: slide-up 0.5s ease-expo-out both;
+  --animate-slide-down: slide-down 0.5s ease-expo-out both;
+  --animate-slide-left: slide-left 0.5s ease-expo-out both;
+  --animate-slide-right: slide-right 0.5s ease-expo-out both;
+  --animate-pop: pop 0.45s ease-spring both;
+  --animate-shimmer: shimmer 2.2s linear infinite;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-float-slow: float 11s ease-in-out infinite;
+  --animate-pulse-glow: pulse-glow 3s ease-in-out infinite;
+  --animate-gradient: gradient-move 8s ease infinite;
+  --animate-marquee: marquee 32s linear infinite;
+  --animate-orbit: orbit 14s linear infinite;
+  --animate-tick: tick 1.2s ease-in-out infinite;
+  --animate-spin-slow: spin 3s linear infinite;
+  --animate-aurora: aurora 12s ease-in-out infinite alternate;
+  --animate-blob: blob 16s ease-in-out infinite;
+  --animate-wiggle: wiggle 0.6s ease-in-out;
+  --animate-bounce-soft: bounce-soft 2s ease-in-out infinite;
+}

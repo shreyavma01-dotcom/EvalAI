@@ -1,0 +1,79 @@
+/* ============================================================ */
+/*  Spacing system — vertical rhythm & layout helpers            */
+/* ============================================================ */
+@layer components {
+  /* Stack with a default vertical rhythm */
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-form);
+  }
+
+  .stack-sm {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .stack-md {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-card);
+  }
+
+  .stack-lg {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-dashboard);
+  }
+
+  /* Responsive section padding */
+  .section-pad {
+    padding-block: var(--spacing-section);
+    padding-inline: clamp(1.25rem, 4vw, 3rem);
+  }
+
+  .section-pad-sm {
+    padding-block: var(--spacing-section-sm);
+    padding-inline: clamp(1.25rem, 4vw, 3rem);
+  }
+
+  /* Page gutters */
+  .page-pad {
+    padding-block: var(--spacing-page);
+    padding-inline: clamp(1rem, 3vw, 2rem);
+  }
+
+  /* Centered layout containers */
+  .container-app {
+    width: 100%;
+    max-width: var(--container-app);
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+  }
+
+  .container-wide {
+    width: 100%;
+    max-width: var(--container-wide);
+    margin-inline: auto;
+  }
+
+  .container-narrow {
+    width: 100%;
+    max-width: var(--container-narrow);
+    margin-inline: auto;
+  }
+
+  /* Prose-ish vertical rhythm for content blocks */
+  .rhythm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .rhythm-lg {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+}

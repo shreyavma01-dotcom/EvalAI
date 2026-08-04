@@ -1,0 +1,13 @@
+@import '@fontsource/outfit/400.css';
+@import '@fontsource/outfit/500.css';
+@import '@fontsource/outfit/600.css';
+@import '@fontsource/outfit/700.css';
+@import 'tailwindcss';
+
+@import './tokens.css';
+@import './base.css';
+@import './typography.css';
+@import './spacing.css';
+@import './shadows.css';
+@import './utilities.css';
+@import './animations.css';
