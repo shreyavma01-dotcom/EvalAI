@@ -60,6 +60,11 @@ app.get('/health', (_req, res) => {
 
 // API routes
 app.use('/api/evaluation', require('./routes/evaluate.routes'));
+app.use('/api/auth', require('./routes/auth.routes'));
+app.use('/api/student', require('./routes/student.routes'));
+app.use('/api/teacher', require('./routes/teacher.routes'));
+app.use('/api/admin', require('./routes/admin.routes'));
+app.use('/api/notifications', require('./routes/notification.routes'));
 
 // 404
 app.use(notFound);

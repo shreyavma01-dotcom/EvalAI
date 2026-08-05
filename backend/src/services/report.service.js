@@ -27,6 +27,11 @@ function computeSummary(result) {
   return { counts, obtainedMarks, totalMarks, percentage, grade, passed, passingMarks };
 }
 
+function clampUnit(value) {
+  const v = Number(value) || 0;
+  return Math.min(1, Math.max(0, v));
+}
+
 /**
  * Generates a polished PDF evaluation report (pdfkit). Includes the student's
  * summary, score, grade, per-question breakdown and teacher feedback.
@@ -38,8 +43,10 @@ function buildReportPdf(result) {
   doc.on('data', (chunk) => chunks.push(chunk));
 
   const GREEN = '#2D6A4F';
+  const GREEN_ACCENT = '#22C55E';
   const LIGHT = '#D8F3DC';
   const GRAY = '#6B7280';
+  const GRAY_LIGHT = '#F3F4F6';
   const DARK = '#1F2937';
 
   // Header band
@@ -55,7 +62,7 @@ function buildReportPdf(result) {
     .text(`Generated ${new Date().toLocaleString()}`, 48, 62);
   doc
     .fontSize(12)
-    .text(`${result.subject || 'General'} · Powered by Gemini 2.5 Flash`, 48, 80);
+    .text(`${result.subject || 'General'} · Powered by Gemini Flash`, 48, 80);
 
   // Student + score grid
   doc
@@ -163,6 +170,89 @@ function buildReportPdf(result) {
     doc.fill(GRAY).font('Helvetica').fontSize(10).text(body || '—', 48, y, { width: doc.page.width - 96 });
     y += doc.heightOfString(body || '—', { width: doc.page.width - 96 }) + 14;
   }
+
+  // ---- Final evaluation page (teacher-style summary card) ----
+  doc.addPage();
+  doc.rect(0, 0, doc.page.width, 60).fill(GREEN);
+
+  // averageConfidence from result or fall back to mean of question confidence.
+  const questions = result.questions || [];
+  const avgConfidence =
+    Number(result.averageConfidence) ||
+    (questions.length
+      ? Math.round((questions.reduce((s, q) => s + (Number(q.confidence) || 0), 0) / questions.length) * 100) / 1000
+      : 0);
+  const signature = result.teacherSignature || 'EvalAI Grading Assistant';
+  const evaluatedAt = result.evaluatedAt || new Date();
+  const evalDate = evaluatedAt instanceof Date ? evaluatedAt : new Date(evaluatedAt || Date.now());
+
+  doc
+    .fill('#FFFFFF')
+    .font('Helvetica-Bold')
+    .fontSize(18)
+    .text('Final Evaluation Summary', 48, 118);
+  doc
+    .font('Helvetica')
+    .fontSize(11)
+    .text(`${result.subject || 'General'} · ${result.studentName || 'Student'}`, 48, 148);
+
+  // Overall score card
+  doc.roundedRect(48, 190, 504, 96, 12).fill(GRAY_LIGHT);
+  doc
+    .fill(DARK)
+    .fontSize(11)
+    .font('Helvetica-Bold')
+    .text('Overall Score', 64, 210);
+  doc
+    .fontSize(40)
+    .text(`${summary.obtainedMarks}/${summary.totalMarks}`, 64, 228);
+  doc
+    .font('Helvetica')
+    .fontSize(12)
+    .fill(GRAY)
+    .text(`Score: ${summary.obtainedMarks}/${summary.totalMarks}  ·  ${summary.percentage}%  ·  Grade ${summary.grade}  ·  ${summary.passed ? 'PASSED' : 'NOT PASSED'}`, 64, 284);
+
+  // Confidence meters row
+  const meterW = 200;
+  const meterX = 420;
+  const meterY = 200;
+  doc.fill(DARK).font('Helvetica-Bold').fontSize(12).text('AI Confidence', meterX, meterY);
+  doc.roundedRect(meterX, meterY + 20, meterW, 16, 8).fill('#E5E7EB');
+  doc
+    .roundedRect(meterX, meterY + 20, Math.max(6, meterW * clampUnit(avgConfidence)), 16, 8)
+    .fill(avgConfidence >= 0.7 ? GREEN_ACCENT : avgConfidence >= 0.4 ? '#F59E0B' : '#DC2626');
+  doc
+    .fill(GRAY)
+    .fontSize(10)
+    .font('Helvetica')
+    .text(`${Math.round(avgConfidence * 100)}% average per-question confidence`, meterX, meterY + 42);
+
+  // Final feedback rows
+  let fy = 370;
+  const finalRows = [
+    ['Teacher Feedback', result.finalFeedback || result.teacherFeedback || feedback.overall],
+    ['Strengths', (result.strengths && result.strengths.length ? result.strengths : feedback.strengths || []).join(' · ')],
+    ['Areas to Improve', (result.topicsToImprove || []).join(' · ') || (feedback.weaknesses || []).join(' · ')],
+  ];
+  for (const [title, body] of finalRows) {
+    if (fy > doc.page.height - 160) {
+      doc.addPage();
+      fy = 48;
+    }
+    doc.fill(DARK).font('Helvetica-Bold').fontSize(13).text(title, 48, fy);
+    fy += 20;
+    const lines = String(body || '—');
+    doc.fill(GRAY).font('Helvetica').fontSize(10).text(lines, 48, fy, { width: doc.page.width - 96 });
+    fy += Math.max(20, doc.heightOfString(lines, { width: doc.page.width - 96 }) + 10);
+  }
+
+  // Teacher signature + date footer
+  fy += 16;
+  doc.moveTo(48, fy).lineTo(280, fy).strokeColor('#9CA3AF').lineWidth(1).stroke();
+  doc.fill(GRAY).font('Helvetica').fontSize(10).text('Teacher signature / Evaluated by', 48, fy + 6);
+  doc.fill(DARK).font('Helvetica-Bold').fontSize(12).text(String(result.teacherName || 'EvalAI Grading Assistant'), 48, fy + 22);
+  doc.fill(GRAY).font('Helvetica').fontSize(10).text(`Evaluated on ${evalDate.toLocaleDateString()}.`, 48, fy + 40);
+  doc.text(`Student: ${result.studentName || '—'}. score: ${summary.obtainedMarks}/${summary.totalMarks}`, 48, fy + 55);
 
   doc.end();
   return new Promise((resolve, reject) => {

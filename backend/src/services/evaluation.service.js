@@ -163,12 +163,26 @@ async function runEvaluation({ evaluationId, sheetPages, config, onStage }) {
     });
   }
 
+  const obtainedMarks = evaluation.questions.reduce((s, q) => s + (Number(q.obtainedMarks) || 0), 0);
+  const totalMarks = evaluation.questions.reduce((s, q) => s + (Number(q.maxMarks) || 0), 0);
+  const percentage = totalMarks > 0 ? Math.round((obtainedMarks / totalMarks) * 10000) / 100 : 0;
+  const averageConfidence =
+    evaluation.questions.length > 0
+      ? Math.round(
+          (evaluation.questions.reduce((s, q) => s + (Number(q.confidence) || 0), 0) / evaluation.questions.length) * 100
+        ) / 100
+      : 0;
+
   const record = {
     evaluationId,
     subject,
     questions: evaluation.questions,
     teacherFeedback: evaluation.teacherFeedback,
     topicsToImprove: evaluation.topicsToImprove,
+    obtainedMarks,
+    totalMarks,
+    percentage,
+    averageConfidence,
     pages,
     status: 'completed',
     elapsedMs: Date.now() - startedAt,

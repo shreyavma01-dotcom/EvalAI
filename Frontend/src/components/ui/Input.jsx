@@ -24,6 +24,7 @@ export const inputVariants = cva(
         sm: 'h-8 px-2.5 text-sm rounded-md',
         md: 'h-10 px-3.5 text-sm rounded-lg',
         lg: 'h-12 px-4 text-base rounded-lg',
+        xl: 'h-14 px-4 text-[15px] rounded-2xl hover:border-ring/50 hover:shadow-[0_6px_18px_-10px_rgba(13,148,136,0.35)] focus:shadow-[0_10px_32px_-12px_rgba(13,148,136,0.45)]',
       },
     },
     defaultVariants: {
@@ -78,14 +79,19 @@ export const Input = forwardRef(function Input(
       ) : null}
       <div className="relative">
         {LeftIcon ? (
-          <LeftIcon className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted" />
+          <LeftIcon
+            className={cn(
+              'pointer-events-none absolute top-1/2 -translate-y-1/2 text-muted',
+              size === 'xl' ? 'left-4 size-5' : 'left-3 size-4',
+            )}
+          />
         ) : null}
         <input
           ref={ref}
           id={inputId}
           className={cn(
             inputVariants({ variant, size }),
-            LeftIcon && 'pl-9',
+            LeftIcon && (size === 'xl' ? 'pl-11' : 'pl-9'),
             RightIcon && 'pr-10',
             className,
           )}

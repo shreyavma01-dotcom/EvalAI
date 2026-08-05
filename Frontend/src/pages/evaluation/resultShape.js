@@ -1,7 +1,8 @@
 /**
  * Maps a backend evaluation record into the teacher-style shape the page
  * renders. Everything here comes from the real pipeline — nothing is mocked.
- * Marks, percentages and confidence are deliberately NOT surfaced.
+ * Marks and confidence are carried for the teacher's review step, the review
+ * components themselves still render the notebook-style verdict.
  */
 export function buildResult(record = {}) {
   const questions = Array.isArray(record?.questions) ? record.questions : []
@@ -21,6 +22,9 @@ export function buildResult(record = {}) {
     teacherComment: q.teacherComment ?? '',
     teacherNote: q.teacherNote ?? '',
     markups: Array.isArray(q.markups) ? q.markups : [],
+    obtainedMarks: typeof q.obtainedMarks === 'number' ? q.obtainedMarks : null,
+    maxMarks: typeof q.maxMarks === 'number' ? q.maxMarks : null,
+    confidence: typeof q.confidence === 'number' ? q.confidence : null,
   }))
 
   return {
@@ -32,6 +36,8 @@ export function buildResult(record = {}) {
     pages: Array.isArray(record?.pages) ? record.pages : [],
     correctedPdfUrl: record?.correctedPdfUrl ?? '',
     elapsedMs: record?.elapsedMs ?? 0,
+    aiScore: typeof record?.score === 'number' ? record.score : null,
+    aiPercentage: typeof record?.percentage === 'number' ? record.percentage : null,
   }
 }
 

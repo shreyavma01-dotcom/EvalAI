@@ -4,6 +4,7 @@ const app = require('./app');
 const { connectDB } = require('./config/db');
 const { initRedis } = require('./config/redis');
 const { initSocket } = require('./sockets');
+const { seedDemoUsers } = require('./services/seed.service');
 const logger = require('./utils/logger');
 const { PORT, NODE_ENV } = require('./config/env');
 
@@ -13,6 +14,11 @@ async function bootstrap() {
   try {
     await connectDB();
     await initRedis();
+
+    // Idempotent demo accounts — safe to run on every boot.
+    await seedDemoUsers().catch((err) => {
+      logger.warn(`Demo user seeding skipped: ${err.message}`);
+    });
 
     server = createServer(app);
     initSocket(server);

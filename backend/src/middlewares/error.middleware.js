@@ -1,5 +1,13 @@
 const logger = require('../utils/logger');
 
+/**
+ * Wraps an async route/controller handler so thrown errors reach the
+ * central error handler.
+ */
+function asyncHandler(fn) {
+  return (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
+}
+
 function notFound(_req, res) {
   res.status(404).json({ success: false, message: 'Route not found' });
 }
@@ -18,6 +26,11 @@ function errorHandler(err, _req, res, _next) {
     return res.status(400).json({ success: false, message });
   }
 
+  if (err.code === 11000) {
+    const field = Object.keys(err.keyValue || {})[0] || 'field';
+    return res.status(409).json({ success: false, message: `An account with this ${field} already exists.` });
+  }
+
   if (err.name === 'ValidationError') {
     return res.status(400).json({
       success: false,
@@ -28,10 +41,6 @@ function errorHandler(err, _req, res, _next) {
   }
 
   const status = err.status || err.statusCode || 500;
-  // Surface actionable messages for our own pipeline errors (Gemini key
-  // missing 503, OCR/read failure 422, Gemini unreachable 502, upload 400).
-  // 4xx messages are always surfaced; 5xx only when marked operational so
-  // unexpected internal failures stay generic.
   const message = status < 500 || err.isOperational ? err.message : 'Internal server error';
   res.status(status).json({
     success: false,
@@ -40,4 +49,4 @@ function errorHandler(err, _req, res, _next) {
   });
 }
 
-module.exports = { notFound, errorHandler };
+module.exports = { notFound, errorHandler, asyncHandler };
