@@ -25,6 +25,7 @@ export const inputVariants = cva(
         md: 'h-10 px-3.5 text-sm rounded-lg',
         lg: 'h-12 px-4 text-base rounded-lg',
         xl: 'h-14 px-4 text-[15px] rounded-2xl hover:border-ring/50 hover:shadow-[0_6px_18px_-10px_rgba(13,148,136,0.35)] focus:shadow-[0_10px_32px_-12px_rgba(13,148,136,0.45)]',
+        auth: 'h-12 px-4 text-sm rounded-xl',
       },
     },
     defaultVariants: {
@@ -85,8 +86,7 @@ export const Input = forwardRef(function Input(
               size === 'xl' ? 'left-4 size-5' : 'left-3 size-4',
             )}
           />
-        ) : null}
-        <input
+        ) : null}        <input
           ref={ref}
           id={inputId}
           className={cn(

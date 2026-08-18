@@ -101,18 +101,18 @@ export function LoginPage() {
         </>
       }
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5" noValidate>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
         {/* Role selection */}
         <div>
-          <span className="mb-2 block text-sm font-medium text-foreground">I am a</span>
-          <div className="relative grid grid-cols-2 rounded-2xl border border-border bg-background-soft/80 p-1">
+          <span className="mb-1.5 block text-sm font-medium text-foreground">I am a</span>
+          <div className="relative grid h-[46px] grid-cols-2 rounded-xl border border-border bg-background-soft/80 p-1">
             {ROLES.map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 type="button"
                 onClick={() => setRole(id)}
                 className={cn(
-                  'relative z-10 flex items-center justify-center gap-2 rounded-[13px] px-4 py-2.5 text-sm font-semibold transition-colors duration-200',
+                  'relative z-10 flex h-[38px] items-center justify-center gap-2 rounded-[10px] px-4 text-sm font-semibold transition-colors duration-200',
                   role === id ? 'text-white' : 'text-muted hover:text-foreground',
                 )}
               >
@@ -124,9 +124,9 @@ export function LoginPage() {
               layoutId="auth-role-pill"
               transition={{ type: 'spring', stiffness: 400, damping: 32 }}
               className={cn(
-                'absolute inset-y-1 w-[calc(50%-4px)] rounded-[13px]',
+                'absolute inset-y-1 w-[calc(50%-4px)] rounded-[10px]',
                 role === 'student' ? 'left-1' : 'left-[calc(50%+0px)]',
-                'bg-gradient-to-br from-[#0F766E] to-[#22C55E] shadow-[0_8px_20px_-8px_rgba(15,118,110,0.6)]',
+                'bg-gradient-to-br from-[#0F766E] to-[#22C55E] shadow-[0_6px_16px_-6px_rgba(15,118,110,0.6)]',
               )}
             />
           </div>
@@ -135,7 +135,7 @@ export function LoginPage() {
         <Input
           label="Email address"
           type="email"
-          size="xl"
+          size="auth"
           autoComplete="email"
           placeholder="you@school.edu"
           leftIcon={Mail}
@@ -148,7 +148,7 @@ export function LoginPage() {
         <Input
           label="Password"
           type={showPassword ? 'text' : 'password'}
-          size="xl"
+          size="auth"
           autoComplete="current-password"
           placeholder="Your password"
           leftIcon={KeyRound}
@@ -169,20 +169,20 @@ export function LoginPage() {
         </div>
 
         {serverError ? (
-          <p className="rounded-xl border border-danger/25 bg-danger/5 px-3 py-2.5 text-sm text-danger-strong">{serverError}</p>
+          <p className="rounded-xl border border-danger/25 bg-danger/5 px-3 py-2 text-sm text-danger-strong">{serverError}</p>
         ) : null}
 
         <Button
           type="submit"
           size="xl"
           loading={isSubmitting}
-          className="mt-1 h-14 w-full rounded-2xl bg-gradient-to-br from-[#0F766E] to-[#22C55E] text-base font-semibold text-white shadow-[0_14px_36px_-14px_rgba(15,118,110,0.65)] transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-[0_22px_48px_-14px_rgba(15,118,110,0.7)] active:scale-[0.99]"
+          className="h-12 w-full rounded-xl bg-gradient-to-br from-[#0F766E] to-[#22C55E] text-base font-semibold text-white shadow-[0_12px_30px_-12px_rgba(15,118,110,0.65)] transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-[0_18px_40px_-12px_rgba(15,118,110,0.7)] active:scale-[0.99]"
         >
           Sign in
         </Button>
 
-        <div className="mt-3 w-full rounded-2xl border border-[#E5E7EB] bg-[#F8FAFC] p-3.5 shadow-[0_6px_20px_-14px_rgba(15,23,42,0.18)]">
-          <div className="mb-2.5 flex items-center justify-center gap-1.5 text-xs font-bold text-foreground">
+        <div className="mt-1 rounded-xl border border-[#E5E7EB] bg-[#F8FAFC] p-4">
+          <div className="mb-2 flex items-center justify-center gap-1.5 text-xs font-bold text-foreground">
             <Rocket className="size-3.5 text-[#22C55E]" />
             Quick Demo Login
           </div>
@@ -198,7 +198,7 @@ export function LoginPage() {
                 disabled={demoLoading !== ''}
                 onClick={() => demoLogin(key)}
                 className={cn(
-                  'h-10 rounded-xl text-[13px] font-semibold transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.98]',
+                  'h-10 rounded-[10px] text-[13px] font-semibold transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.98]',
                   className,
                 )}
               >

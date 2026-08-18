@@ -14,31 +14,31 @@ const FEATURES = [
 ]
 
 const PARTICLES = [
-  { left: '8%', top: '20%', size: 5, delay: 0, duration: 7 },
-  { left: '86%', top: '14%', size: 4, delay: 1.2, duration: 8 },
-  { left: '14%', top: '78%', size: 6, delay: 0.6, duration: 9 },
+  { left: '8%', top: '22%', size: 4, delay: 0, duration: 7 },
+  { left: '86%', top: '16%', size: 3, delay: 1.2, duration: 8 },
+  { left: '14%', top: '76%', size: 5, delay: 0.6, duration: 9 },
   { left: '72%', top: '72%', size: 3, delay: 2, duration: 6.5 },
-  { left: '48%', top: '10%', size: 4, delay: 1.6, duration: 7.5 },
-  { left: '90%', top: '50%', size: 5, delay: 0.3, duration: 8.5 },
+  { left: '48%', top: '10%', size: 3, delay: 1.6, duration: 7.5 },
+  { left: '90%', top: '50%', size: 4, delay: 0.3, duration: 8.5 },
 ]
 
 const GLASS_CARDS = [
   {
-    className: 'right-[4%] top-[10%]',
+    className: 'right-[5%] top-[12%]',
     icon: ScanText,
     accent: 'text-emerald-300',
     title: 'OCR complete',
     sub: '4 pages scanned',
-    offset: -10,
+    offset: -8,
     delay: 0.4,
   },
   {
-    className: 'left-[3%] bottom-[20%]',
+    className: 'left-[4%] bottom-[22%]',
     icon: Check,
     accent: 'text-cyan-300',
     title: 'Answer evaluated',
     sub: '92% score',
-    offset: 10,
+    offset: 8,
     delay: 1,
   },
 ]
@@ -72,38 +72,38 @@ function BackgroundFX() {
 /** Dark green brand panel: logo, hero illustration, value proposition, feature pills. */
 function BrandPanel() {
   return (
-    <div className="relative flex flex-col overflow-hidden bg-gradient-to-br from-[#0E2A20] via-[#123528] to-[#0A1F16] p-6 sm:p-8 lg:p-10 xl:p-12">
+    <div className="relative flex flex-col overflow-hidden bg-gradient-to-br from-[#0E2A20] via-[#123528] to-[#0A1F16] p-5 sm:p-6 lg:p-8 xl:p-9">
       {/* Soft radial glow behind the hero */}
-      <div className="pointer-events-none absolute left-1/2 top-[44%] size-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#2F8F6B]/35 blur-3xl" />
+      <div className="pointer-events-none absolute left-1/2 top-[46%] size-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#2F8F6B]/35 blur-3xl" />
 
       {/* Blurred glowing circles */}
-      <div className="pointer-events-none absolute -left-20 top-16 size-44 rounded-full bg-[#58C49B]/25 blur-3xl" />
-      <div className="pointer-events-none absolute -right-16 bottom-40 size-56 rounded-full bg-[#2F8F6B]/30 blur-3xl" />
-      <div className="pointer-events-none absolute bottom-24 left-1/3 size-24 rounded-full bg-[#8CE0B8]/20 blur-2xl" />
-      <div className="pointer-events-none absolute right-1/4 top-1/3 size-16 rounded-full bg-[#58C49B]/20 blur-xl" />
+      <div className="pointer-events-none absolute -left-20 top-16 size-40 rounded-full bg-[#58C49B]/25 blur-3xl" />
+      <div className="pointer-events-none absolute -right-16 bottom-40 size-48 rounded-full bg-[#2F8F6B]/30 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-20 left-1/3 size-20 rounded-full bg-[#8CE0B8]/20 blur-2xl" />
+      <div className="pointer-events-none absolute right-1/4 top-1/3 size-14 rounded-full bg-[#58C49B]/20 blur-xl" />
 
       <div className="relative z-10 flex h-full flex-col">
         {/* Brand mark + AI badge, top-left */}
-        <div className="flex flex-col items-start gap-3">
-          <div className="flex items-center gap-3">
-            <span className="grid size-11 place-items-center rounded-2xl bg-gradient-to-br from-[#2F8F6B] to-[#58C49B] text-white shadow-[0_10px_24px_-8px_rgba(47,143,107,0.55)]">
-              <Sparkles className="size-5" />
+        <div className="flex flex-col items-start gap-2.5">
+          <div className="flex items-center gap-2.5">
+            <span className="grid size-9 place-items-center rounded-xl bg-gradient-to-br from-[#2F8F6B] to-[#58C49B] text-white shadow-[0_8px_20px_-8px_rgba(47,143,107,0.55)]">
+              <Sparkles className="size-4" />
             </span>
-            <span className="text-xl font-bold tracking-tight text-white">EvalAI</span>
+            <span className="text-lg font-bold tracking-tight text-white">EvalAI</span>
           </div>
           <motion.span
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.6 }}
-            className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-medium tracking-wide text-white/80 backdrop-blur-md"
+            className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-2.5 py-0.5 text-[10px] font-medium tracking-wide text-white/80 backdrop-blur-md"
           >
-            <Gem className="size-3 text-emerald-300" />
+            <Gem className="size-2.5 text-emerald-300" />
             Powered by Gemini AI
           </motion.span>
         </div>
 
-        {/* Hero illustration — floats slowly, sized to ~80% of the panel */}
-        <div className="relative flex min-h-0 flex-1 items-center justify-center py-6 sm:py-8 lg:py-10">
+        {/* Hero illustration — floats slowly, sized to ~60% of the panel and pulled up */}
+        <div className="relative flex min-h-0 flex-1 items-center justify-center py-3 sm:py-5 lg:py-6 lg:-mt-2">
           {/* Floating glass cards */}
           {GLASS_CARDS.map(({ className, icon: Icon, accent, title, sub, offset, delay }) => (
             <motion.div
@@ -114,14 +114,14 @@ function BrandPanel() {
                 opacity: { duration: 0.7, delay },
                 y: { duration: 6, repeat: Infinity, ease: 'easeInOut' },
               }}
-              className={`absolute z-20 hidden items-center gap-2.5 rounded-2xl border border-white/15 bg-white/10 px-3.5 py-2.5 shadow-[0_16px_36px_-16px_rgba(0,0,0,0.5)] backdrop-blur-xl sm:flex ${className}`}
+              className={`absolute z-20 hidden items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-2.5 py-1.5 shadow-[0_12px_28px_-14px_rgba(0,0,0,0.5)] backdrop-blur-xl sm:flex ${className}`}
             >
-              <span className="grid size-9 place-items-center rounded-xl bg-white/10">
-                <Icon className={`size-4 ${accent}`} />
+              <span className="grid size-7 place-items-center rounded-lg bg-white/10">
+                <Icon className={`size-3.5 ${accent}`} />
               </span>
               <span className="text-left">
-                <span className="block text-xs font-semibold text-white">{title}</span>
-                <span className="block text-[11px] text-white/60">{sub}</span>
+                <span className="block text-[10px] font-semibold text-white">{title}</span>
+                <span className="block text-[9px] text-white/60">{sub}</span>
               </span>
             </motion.div>
           ))}
@@ -140,23 +140,23 @@ function BrandPanel() {
           <motion.img
             src={EducationIllustration}
             alt="AI-powered handwritten answer sheet evaluation illustration"
-            className="h-auto w-full max-w-[300px] object-contain drop-shadow-[0_36px_60px_rgba(0,0,0,0.4)] sm:max-w-[420px] lg:max-w-[82%]"
-            animate={{ y: [0, -16, 0] }}
+            className="h-auto w-full max-w-[220px] object-contain drop-shadow-[0_28px_48px_rgba(0,0,0,0.4)] sm:max-w-[300px] lg:max-w-[72%]"
+            animate={{ y: [0, -12, 0] }}
             transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
           />
         </div>
 
         {/* Value proposition + feature pills */}
-        <div className="space-y-4">
+        <div className="space-y-3">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.35 }}
           >
-            <h2 className="text-xl font-bold leading-snug tracking-tight text-white sm:text-2xl">
+            <h2 className="text-[28px] font-bold leading-snug tracking-tight text-white">
               AI-Powered Answer Evaluation
             </h2>
-            <p className="mt-2 max-w-md text-[13px] leading-6 text-[#7FB49A] sm:text-sm">
+            <p className="mt-1.5 max-w-md text-[15px] leading-6 text-[#7FB49A]">
               Automatically evaluate handwritten answer sheets using OCR + Gemini AI with
               teacher-level feedback and analytics.
             </p>
@@ -169,10 +169,10 @@ function BrandPanel() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.5 + i * 0.12 }}
-                className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/10 py-1.5 pl-1.5 pr-4 text-[13px] font-medium text-white/90 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.45)] backdrop-blur-md"
+                className="inline-flex h-8 items-center gap-1.5 rounded-full border border-white/15 bg-white/10 pl-2 pr-3 text-xs font-medium text-white/90 shadow-[0_6px_18px_-10px_rgba(0,0,0,0.45)] backdrop-blur-md"
               >
-                <span className="grid size-5 place-items-center rounded-full bg-gradient-to-br from-emerald-300 to-teal-400 text-[10px] font-bold text-[#0B2A1E]">
-                  <Check className="size-3" strokeWidth={3} />
+                <span className="grid size-4 place-items-center rounded-full bg-gradient-to-br from-emerald-300 to-teal-400 text-white">
+                  <Check className="size-2.5" strokeWidth={3.5} />
                 </span>
                 {label}
               </motion.span>
@@ -187,35 +187,35 @@ function BrandPanel() {
 /** Premium split-shell for the auth pages. */
 export function AuthLayout({ title, subtitle, children, footer }) {
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden p-3 sm:p-5 lg:p-8">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden p-3 sm:p-4 lg:p-5">
       <BackgroundFX />
 
       <motion.div
         initial={{ opacity: 0, y: 26, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="relative z-10 mx-auto flex w-full max-w-[1400px] items-center justify-center"
+        className="relative z-10 mx-auto flex w-full max-w-[1180px] items-center justify-center"
       >
-        <div className="grid w-full overflow-hidden rounded-[2rem] border border-white/60 bg-white/70 shadow-[0_50px_140px_-45px_rgba(15,23,42,0.45)] backdrop-blur-xl lg:grid-cols-[48fr_52fr] lg:min-h-[min(92vh,920px)]">
+        <div className="grid w-full overflow-hidden rounded-3xl border border-white/60 bg-white/70 shadow-[0_24px_70px_-35px_rgba(15,23,42,0.35)] backdrop-blur-xl lg:grid-cols-[40fr_58fr] lg:h-[min(90vh,780px)]">
           <BrandPanel />
 
           {/* Form panel */}
-          <div className="flex flex-col justify-center p-6 sm:p-9 md:p-12 lg:p-12 xl:p-16">
-            <Link to="/" className="mb-8 flex items-center gap-2.5 lg:hidden">
+          <div className="flex min-h-0 flex-col justify-center overflow-y-auto p-6 sm:p-9">
+            <Link to="/" className="mb-6 flex items-center gap-2.5 lg:hidden">
               <Logo />
               <span className="text-lg font-bold tracking-tight text-foreground">EvalAI</span>
             </Link>
 
-            <div className="mx-auto flex w-full max-w-xl flex-col">
-              <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+            <div className="m-auto flex w-full max-w-md flex-col">
+              <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-[40px] sm:leading-[1.1]">
                 {title}
               </h1>
-              {subtitle ? <p className="mt-2.5 text-sm leading-6 text-muted sm:text-[15px]">{subtitle}</p> : null}
-              <div className="mt-8">{children}</div>
+              {subtitle ? <p className="mt-1.5 text-sm leading-6 text-muted">{subtitle}</p> : null}
+              <div className="mt-6">{children}</div>
             </div>
 
             {footer ? (
-              <div className="mx-auto mt-8 w-full max-w-xl border-t border-border/60 pt-6 text-center text-sm text-muted">
+              <div className="mx-auto mt-6 w-full max-w-md border-t border-border/60 pt-4 text-center text-sm text-muted">
                 {footer}
               </div>
             ) : null}
