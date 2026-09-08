@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Check, Circle, MessageSquareQuote, Target, TriangleAlert, X } from 'lucide-react'
+import { Check, Circle, GraduationCap, MessageSquareQuote, Target, TriangleAlert, X } from 'lucide-react'
 import { cn } from '@/utils/cn'
 
 const MARKERS = {
@@ -54,13 +54,27 @@ export function QuestionReview({ questions }) {
                   </span>
                   <div>
                     <div className="text-sm font-semibold text-[#17332A]">Question {answer.questionNumber ?? index + 1}</div>
-                    <span className={cn('mt-1 inline-flex rounded-full px-2.5 py-1 text-[10px] font-semibold', marker.chip)}>
-                      {marker.label}
-                    </span>
+                    <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                      <span className={cn('inline-flex rounded-full px-2.5 py-1 text-[10px] font-semibold', marker.chip)}>
+                        {marker.label}
+                      </span>
+                      {answer.needsTeacherReview ? (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-[#F4A62A]/15 px-2.5 py-1 text-[10px] font-semibold text-[#B45309]">
+                          <GraduationCap className="size-3" /> Needs your review
+                        </span>
+                      ) : null}
+                    </div>
                   </div>
                 </div>
                 {answer.page ? <span className="text-sm text-[#5B746B]">Page {answer.page}</span> : null}
               </div>
+
+              {answer.needsTeacherReview && answer.reviewReason ? (
+                <p className="mt-3 rounded-2xl border border-[#F4A62A]/30 bg-[#FFF8EC] px-3 py-2 text-sm text-[#8A5A12]">
+                  <span className="font-semibold">Why this was escalated: </span>
+                  {answer.reviewReason}
+                </p>
+              ) : null}
 
               <div className="mt-4 grid gap-4 lg:grid-cols-2">
                 <Block label="Student answer" value={answer.studentAnswer} empty="No answer written" />

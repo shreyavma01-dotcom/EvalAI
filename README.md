@@ -122,6 +122,74 @@ The core lives in `backend/src/services/evaluation.service.js` (`runEvaluation`)
 5. **Report** — original + annotated page images and a compiled `corrected-sheets.pdf` are stored in `uploads/<evaluationId>/`; the full record (questions, marks, feedback, per-page OCR text, URLs) is persisted.
 6. **Publish** — progress is streamed to the client over Socket.IO (`evaluation:progress`, room per evaluation), and the teacher reviews/publishes the result.
 
+## Agentic Evaluation Architecture
+
+The evaluation pipeline is orchestrated by a genuine **Agentic Evaluation Controller** (`backend/src/services/agent/evaluationAgent.service.js`) instead of a fixed, blind sequence. The agent follows the loop:
+
+```text
+🎯 GOAL → 👁 OBSERVE → 🧠 DECIDE → 🛠 ACT → 🔍 VERIFY → 🔄 ADAPT → 👨‍🏫 ESCALATE → ✅ FINAL OUTCOME
+```
+
+```mermaid
+flowchart TD
+    A[🎯 Goal: Evaluate the answer sheet accurately] --> B[👁 Observe page quality via sharp metrics]
+    B --> C{🧠 Decide: preprocessing needed?}
+    C -- good quality --> D[🛠 OCR directly]
+    C -- low contrast / blur / dark --> E[🛠 Enhance image first]
+    E --> D
+    D --> F[🔍 Verify OCR result]
+    F -- sufficient --> G[🛠 Gemini Vision evaluation]
+    F -- insufficient --> H[🔄 Adapt: next bounded OCR strategy<br/>max 3 per page]
+    H --> F
+    G --> I[🔍 Verify structured output]
+    I -- invalid --> J[Friendly failure]
+    I -- valid --> K{🧠 Per-question classification}
+    K -- confidence >= 70% --> L[Auto-evaluated]
+    K -- uncertain --> M[🔄 One focused Gemini re-analysis]
+    M -- improved --> L
+    M -- still uncertain --> N[👨‍🏫 Escalate: needs_teacher_review]
+    K -- low confidence --> N
+    L --> O[🛠 Annotate + PDF + persist agentTrace]
+    N --> O
+    O --> P[✅ Final outcome — teacher stays in control]
+```
+
+### Goal
+Evaluate handwritten answer sheets accurately while adapting to unreliable inputs — never silently grading what the system cannot read confidently.
+
+### Observe
+- Deterministic page-quality metrics per page via the existing `sharp` dependency (`observation.service.js`): dimensions, brightness, contrast, entropy → `low_contrast`, `possible_blur`, `too_dark`, `nearly_blank`, `low_resolution`.
+- Real OCR results (text present, length, provider confidence where it actually exists).
+- Structured Gemini evaluation results (questions, marks ranges, confidence).
+
+### Decide
+Deterministic rules (`decision.service.js`), based only on actual observations:
+- **Preprocessing**: enhance (grayscale contrast stretch + sharpen) only when the page quality observation flags issues; good pages are OCR'd directly.
+- **OCR strategy**: a bounded plan — default chain → enhanced image → alternate provider (max **3 strategies per page**).
+- **Retry**: Gemini transient failures reuse the existing exponential-backoff `withRetry`.
+- **Question strategy**: `AUTO_EVALUATED` (confidence ≥ 0.7), `NEEDS_ADDITIONAL_ANALYSIS` (one focused Gemini Vision re-read of the question's page), or `NEEDS_TEACHER_REVIEW` (≤ 0.4 or unreadable answer).
+- **Escalation**: unresolved questions/pages are flagged `needs_teacher_review` — the agent never invents a grade.
+
+### Act
+The existing services act as the agent's tools — no duplicated functionality:
+- Image processing (`evaluation.service.normalizePageImage`, agent `enhancePageImage`)
+- OCR (`ocr.service`: Google Vision / Tesseract)
+- Gemini evaluation (`gemini-evaluate.service`)
+- Annotation (`annotation.service`)
+- PDF + persistence (`storage.service`, corrected PDF builder)
+
+### Verify
+Every major action is verified (`verification.service.js`): OCR text presence/meaningfulness/confidence (never fabricated — Tesseract's real 0-100 score is used when available, Google Vision only exposes a presence flag), structured evaluation validity (questions detected, pages in range, marks within bounds), and annotation output completeness.
+
+### Adapt
+When verification fails, the agent visibly adapts — switches OCR strategy, retries with an enhanced image, re-analyzes an uncertain question — all bounded (max 3 OCR strategies/page, max 5 question re-checks per evaluation) and recorded in the trace.
+
+### Escalate
+Unresolved questions get `needsTeacherReview: true` + a human-readable `reviewReason`, the evaluation record gets status `needs_teacher_review` with an `agentOutcome` summary, and the teacher remains the final authority (review, edit marks/feedback, publish — unchanged).
+
+### Trace
+Every observation, decision, action, verification, adaptation and escalation is stored as a concise `agentTrace` entry on the evaluation record (Mongo/JSON fallback) and streamed live over Socket.IO (`agent:trace` events). The frontend renders this as the **Agent Activity Timeline** in the evaluation studio, alongside the existing 6-step pipeline UI — no chain-of-thought or prompts are exposed, only what actually happened.
+
 ## API Overview
 
 All routes are under `/api` and rate-limited (1000 req / 15 min). Protected routes require `Authorization: Bearer <access-token>`.

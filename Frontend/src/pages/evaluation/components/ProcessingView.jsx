@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { BookOpenCheck, BrainCircuit, CheckCircle2, Loader2, RotateCcw, Sparkles, TriangleAlert } from 'lucide-react'
 import { PHASES } from '../useEvaluation'
+import { AgentTimeline } from './AgentTimeline'
 import { cn } from '@/utils/cn'
 
 function formatStageLabel(stage) {
@@ -24,7 +25,7 @@ function formatStageLabel(stage) {
   }
 }
 
-export function ProcessingView({ phase, progress, logs, elapsed, canRun, onRun, onReset, hasFiles, error }) {
+export function ProcessingView({ phase, progress, logs, agentEvents = [], elapsed, canRun, onRun, onReset, hasFiles, error }) {
   const isProcessing = phase === PHASES.processing
   const isComplete = phase === PHASES.complete
   const isError = phase === PHASES.error
@@ -107,6 +108,8 @@ export function ProcessingView({ phase, progress, logs, elapsed, canRun, onRun, 
           </div>
         ) : null}
       </div>
+
+      <AgentTimeline events={agentEvents} className="mt-5" />
 
       <div className="mt-5 rounded-3xl border border-[#D8ECE2] bg-[#0F231B] p-4">
         <div className="flex items-center justify-between text-[11px] font-medium uppercase tracking-[0.24em] text-[#84B79D]">

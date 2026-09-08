@@ -48,6 +48,28 @@ function emit(evaluationId, stage, percent, message) {
 }
 
 /**
+ * Structured agent trace events (goal / observed / decided / acted /
+ * verified / adapted / escalated / completed) for the Agent Activity
+ * Timeline. Only events for things that actually happened are emitted.
+ */
+function emitAgentEvent(evaluationId, event) {
+  if (!evaluationId || !event) return;
+  try {
+    getIO()?.to(`evaluation:${evaluationId}`).emit('agent:trace', {
+      evaluationId,
+      type: event.type,
+      step: event.step,
+      title: event.title,
+      message: event.message,
+      metadata: event.metadata,
+      timestamp: event.timestamp,
+    });
+  } catch (err) {
+    logger.warn(`Agent trace emit failed: ${err.message}`);
+  }
+}
+
+/**
  * POST /api/evaluation/evaluate
  * Real end-to-end evaluation using ONLY the uploaded handwritten pages.
  * Gemini Vision reads the handwriting and grades from its own knowledge.
@@ -81,6 +103,7 @@ router.post(
         sheetPages: sheetPages.map((f) => ({ buffer: f.buffer, mimetype: f.mimetype })),
         config,
         onStage: (stage, percent, message) => emit(evaluationId, stage, percent, message),
+        onAgentEvent: (event) => emitAgentEvent(evaluationId, event),
       });
 
       result.elapsedMs = Date.now() - startedAt;

@@ -49,7 +49,7 @@ const STEPS = [
  * Sheet" toggle and lets the teacher award/publish the final marks.
  */
 export function EvaluationStudioPage({ initialFiles = null, submissionId, submission = null, autoRun = false }) {
-  const { phase, files, setFiles, progress, logs, result, elapsed, error, run, reset, canRun } = useEvaluation()
+  const { phase, files, setFiles, progress, logs, agentEvents, result, elapsed, error, run, reset, canRun } = useEvaluation()
   const hydrated = useRef(false)
   const autoRan = useRef(false)
   const [replaceMode, setReplaceMode] = useState(false)
@@ -240,6 +240,7 @@ export function EvaluationStudioPage({ initialFiles = null, submissionId, submis
           phase={phase}
           progress={progress}
           logs={logs}
+          agentEvents={agentEvents}
           elapsed={elapsed}
           canRun={canRun}
           onRun={run}

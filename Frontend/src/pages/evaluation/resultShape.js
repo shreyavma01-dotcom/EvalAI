@@ -22,6 +22,8 @@ export function buildResult(record = {}) {
     teacherComment: q.teacherComment ?? '',
     teacherNote: q.teacherNote ?? '',
     markups: Array.isArray(q.markups) ? q.markups : [],
+    needsTeacherReview: Boolean(q.needsTeacherReview),
+    reviewReason: q.reviewReason ?? '',
     obtainedMarks: typeof q.obtainedMarks === 'number' ? q.obtainedMarks : null,
     maxMarks: typeof q.maxMarks === 'number' ? q.maxMarks : null,
     confidence: typeof q.confidence === 'number' ? q.confidence : null,
@@ -38,6 +40,18 @@ export function buildResult(record = {}) {
     elapsedMs: record?.elapsedMs ?? 0,
     aiScore: typeof record?.score === 'number' ? record.score : null,
     aiPercentage: typeof record?.percentage === 'number' ? record.percentage : null,
+    status: record?.status ?? null,
+    agentOutcome: record?.agentOutcome ?? null,
+    agentTrace: Array.isArray(record?.agentTrace)
+      ? record.agentTrace.map((event) => ({
+          type: event?.type ?? 'verification',
+          step: event?.step ?? null,
+          title: event?.title ?? '',
+          message: event?.message ?? '',
+          metadata: event?.metadata ?? null,
+          timestamp: event?.timestamp ?? event?.createdAt ?? null,
+        }))
+      : [],
   }
 }
 

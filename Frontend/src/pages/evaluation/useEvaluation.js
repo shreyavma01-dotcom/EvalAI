@@ -56,6 +56,7 @@ export function useEvaluation() {
   const [files, setFiles] = useState([])
   const [progress, setProgress] = useState({ percent: 0, currentStep: 0, label: EVAL_STEPS[0].label, message: '' })
   const [logs, setLogs] = useState([])
+  const [agentEvents, setAgentEvents] = useState([])
   const [result, setResult] = useState(null)
   const [error, setError] = useState('')
   const [elapsed, setElapsed] = useState(0)
@@ -86,11 +87,28 @@ export function useEvaluation() {
     setLogs((prev) => [...prev.slice(-40), { time: new Date(), message }])
   }, [])
 
+  // Agent Activity Timeline events — structured agent:trace socket updates.
+  const pushAgentEvent = useCallback((event) => {
+    if (!event?.type) return
+    setAgentEvents((prev) => [
+      ...prev.slice(-79),
+      {
+        type: event.type,
+        step: event.step ?? null,
+        title: event.title ?? '',
+        message: event.message ?? '',
+        metadata: event.metadata ?? null,
+        timestamp: event.timestamp ?? new Date().toISOString(),
+      },
+    ])
+  }, [])
+
   const reset = useCallback(() => {
     if (elapsedRef.current) window.clearInterval(elapsedRef.current)
     setPhase(PHASES.idle)
     setProgress({ percent: 0, currentStep: 0, label: EVAL_STEPS[0].label, message: '' })
     setLogs([])
+    setAgentEvents([])
     setResult(null)
     setError('')
     setElapsed(0)
@@ -124,6 +142,12 @@ export function useEvaluation() {
     }
     socket.on('evaluation:progress', onSocketProgress)
 
+    const onAgentTrace = (payload) => {
+      if (!payload || payload.evaluationId !== evaluationId) return
+      pushAgentEvent(payload)
+    }
+    socket.on('agent:trace', onAgentTrace)
+
     try {
       applyProgress(2, 'uploading', STAGE_LOG.uploading)
       pushLog(STAGE_LOG.uploading)
@@ -133,7 +157,11 @@ export function useEvaluation() {
       })
       applyProgress(100, 'completed', STAGE_LOG.completed)
       pushLog(STAGE_LOG.completed)
-      setResult(buildResult(data))
+      const built = buildResult(data)
+      setResult(built)
+      // Rehydrate the full persisted agent trace so the timeline stays
+      // complete (and survives refreshes backed by the saved record).
+      if (built.agentTrace?.length) setAgentEvents(built.agentTrace)
       setPhase(PHASES.complete)
     } catch (err) {
       const message = err?.response?.data?.message ?? 'Evaluation failed. Please try again.'
@@ -143,9 +171,10 @@ export function useEvaluation() {
       if (elapsedRef.current) window.clearInterval(elapsedRef.current)
       setElapsed(Math.round((Date.now() - startRef.current) / 1000))
       socket.off('evaluation:progress', onSocketProgress)
+      socket.off('agent:trace', onAgentTrace)
       leaveEvaluationRoom(evaluationId)
     }
-  }, [canRun, files, applyProgress, pushLog])
+  }, [canRun, files, applyProgress, pushLog, pushAgentEvent])
 
   return {
     phase,
@@ -153,6 +182,7 @@ export function useEvaluation() {
     setFiles,
     progress,
     logs,
+    agentEvents,
     result,
     elapsed,
     error,

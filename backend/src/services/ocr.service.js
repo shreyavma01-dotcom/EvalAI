@@ -178,4 +178,4 @@ async function ocrImage(imageBuffer) {
   }
 }
 
-module.exports = { ocrImage, resetTesseractWorker, TESSDATA_DIR };
+module.exports = { ocrImage, googleVisionOcr, tesseractOcr, resetTesseractWorker, TESSDATA_DIR };
