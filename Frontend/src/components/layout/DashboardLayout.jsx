@@ -36,8 +36,8 @@ const NAV = {
     { to: '/teacher/submissions', label: 'Assignments', icon: ClipboardList },
     { to: '/teacher/ai-evaluation', label: 'AI Evaluation', icon: Sparkles },
     { to: '/teacher/students', label: 'Students', icon: GraduationCap },
-    { to: '/teacher/reports', label: 'Reports', icon: FileText },
-    { to: '/teacher/analytics', label: 'Analytics', icon: BarChart3 },
+    { to: '/teacher/reports', label: 'Reports', icon: FileText, soon: true },
+    { to: '/teacher/analytics', label: 'Analytics', icon: BarChart3, soon: true },
   ],
   admin: [{ to: '/admin/dashboard', label: 'Dashboard', icon: ShieldCheck }],
 }
@@ -143,6 +143,14 @@ export function DashboardLayout() {
     >
       <item.icon className="size-4" />
       {item.label}
+      {item.soon ? (
+        <span
+          className="rounded-full bg-current/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide opacity-80"
+          title="Coming soon"
+        >
+          Soon
+        </span>
+      ) : null}
     </NavLink>
   )
 

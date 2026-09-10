@@ -19,6 +19,8 @@ import { AiEvaluationPage } from '@/pages/teacher/AiEvaluationPage'
 import { ReviewSubmissionPage } from '@/pages/teacher/ReviewSubmissionPage'
 import { TeacherEvaluatePage } from '@/pages/teacher/TeacherEvaluatePage'
 import { StudentsPage } from '@/pages/teacher/StudentsPage'
+import { ReportsPage } from '@/pages/teacher/ReportsPage'
+import { AnalyticsPage } from '@/pages/teacher/AnalyticsPage'
 import { HistoryPage } from '@/pages/student/HistoryPage'
 import { AdminDashboard } from '@/pages/admin/AdminDashboard'
 import { ErrorBoundary } from '@/components/feedback/ErrorBoundary'
@@ -123,6 +125,8 @@ const router = createBrowserRouter([
           { path: '/teacher/evaluation/:submissionId', element: <TeacherEvaluatePage /> },
           { path: '/teacher/evaluate/:submissionId', element: <TeacherEvaluatePage /> },
           { path: '/teacher/students', element: <StudentsPage /> },
+          { path: '/teacher/reports', element: <ReportsPage /> },
+          { path: '/teacher/analytics', element: <AnalyticsPage /> },
         ],
       },
     ],
